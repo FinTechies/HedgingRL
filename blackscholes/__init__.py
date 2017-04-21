@@ -1,1 +1,1 @@
-from .mathfin import blackScholes
+from .mathfin import blackScholes, CallOption

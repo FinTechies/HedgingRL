@@ -24,3 +24,33 @@ def blackScholes(tau, S, K, sigma):
     vega = S * norm.pdf(d1) * np.sqrt(tau)
     theta = -.5 * S * norm.pdf(d1) * sigma / np.sqrt(tau)
     return {'npv': npv, 'delta': delta, 'gamma': gamma, 'vega': vega, 'theta': theta}
+
+
+class CallOption(object):
+    """
+    Represents a call option in the Black Scholes framework
+    """
+    def __init__(self, start, t, k, n):
+        self.expiry = t
+        self.strike = k
+        self.start = start  # day to sell option
+        self.N = n
+
+    def calc(self, today, vola, underlying):
+        if today < self.start:
+            return {'delta': 0, 'npv': 0, 'vega': 0, 'gamma': 0, 'theta': 0, 'intrinsic': 0}
+        if today > self.expiry:
+            return {'delta': 0, 'npv': 0, 'vega': 0, 'gamma': 0, 'theta': 0, 'intrinsic': 0}
+        if today == self.expiry:
+            return {'delta': 0, 'npv': 0, 'vega': 0, 'gamma': 0, 'theta': 0, 'intrinsic': self.N * max(0, underlying - self.strike)}
+
+        tau = (self.expiry - today) / 250.
+
+        call = blackScholes(tau, underlying, self.strike, vola)
+
+        return {'delta': self.N * call['delta'],
+                'npv': self.N * call['npv'],
+                'vega': self.N * call['vega'],
+                'gamma': self.N * call['gamma'],
+                'theta': self.N * call['theta'],
+                'intrinsic': self.N * max(0, underlying - self.strike)}
