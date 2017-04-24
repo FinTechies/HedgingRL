@@ -1,1 +1,1 @@
-from .mathfin import blackScholes, CallOption
+from .mathfin import blackScholes, CallOption, geometric_brownian_motion
