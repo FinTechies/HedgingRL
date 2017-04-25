@@ -37,13 +37,13 @@ def blackScholes(tau, S, K, sigma):
     """
     sqrt_tau = np.sqrt(tau)
     sigma_sqrt_tau = sigma * sqrt_tau
-    d1 = np.log(S / K) / sigma / sqrt_tau + 0.5 * sigma_sqrt_tau
+    d1 = np.log(S / K) / sigma / sqrt_tau + 0.5 * sigma_sqrt_tau if tau > 0 else 0
     d2 = d1 - sigma_sqrt_tau
-    npv = (S * norm.cdf(d1) - K * norm.cdf(d2))
+    npv = (S * norm.cdf(d1) - K * norm.cdf(d2)) if tau > 0 else np.clip(S-K, 0., np.infty)
     delta = norm.cdf(d1)
-    gamma = norm.pdf(d1) / (S * sigma_sqrt_tau)
+    gamma = norm.pdf(d1) / (S * sigma_sqrt_tau)  if tau > 0 else 0
     vega = S * norm.pdf(d1) * sqrt_tau
-    theta = -.5 * S * norm.pdf(d1) * sigma / sqrt_tau
+    theta = -.5 * S * norm.pdf(d1) * sigma / sqrt_tau  if tau > 0 else 0
     return {'npv': npv, 'delta': delta, 'gamma': gamma, 'vega': vega, 'theta': theta}
 
 
