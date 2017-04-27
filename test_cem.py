@@ -113,8 +113,8 @@ rewards = []
 for (i, iterdata) in enumerate(cem(noisy_evaluation, np.zeros(env.observation_space.shape[0]+1), **params)):
     print('Iteration %2i. Episode mean reward: %7.3f'%(i, iterdata['y_mean']))
     # print(iterdata['theta_mean'])
-    print(iterdata[''])
-    agent = DeterministicContinuousActionLinearPolicy(iterdata['theta_mean'], env.observation_space, env.action_space)
+    print(iterdata['y_mean'])
+    agent = Determi nisticContinuousActionLinearPolicy(iterdata['theta_mean'], env.observation_space, env.action_space)
     do_rollout(agent, env, 200, render=False)
     writefile('agent-%.4i.pkl' % i, str(pickle.dumps(agent, -1)))
 
